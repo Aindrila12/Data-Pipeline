@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtualenv
+venv/
+.env/
+
+# Credentials
+credentials/
+auth_config.yaml
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
