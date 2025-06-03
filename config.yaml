@@ -1,0 +1,18 @@
+fetchers:
+  - class: fetchers.doc_fetcher.DocsFetcher
+    params:
+      document_id: "1vCiKVeZJ-eu5k7mXCWLEHoKklCEnjklmcWSMGI2P-vc"
+
+  # - class: fetchers.api_fetcher.ApiFetcher
+  #   params:
+  #     endpoint: "https://jsonplaceholder.typicode.com/posts"
+
+writers:
+  - class: writers.sheet_writer.SheetsWriter
+    params:
+      sheet_id: "1QQ5vdkowV-QHu4-awkiM-Mq06lQahY0NaunrDXFwQnw"
+      mode: "append"  # custom param used by your writer
+
+  # - class: writers.api_writer.ApiWriter
+  #   params:
+  #     endpoint: "https://example.com/api/store"

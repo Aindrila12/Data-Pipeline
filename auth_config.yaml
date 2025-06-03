@@ -1,0 +1,37 @@
+credentials:
+  gmail_cred: credentials/gmail_credential.json
+  sheets_cred: credentials/credential.json
+  docs_cred: credentials/gmail_credential.json
+  calendar_cred: credentials/gmail_credential.json
+  drive_cred: credentials/gmail_credential.json
+  form_cred: credentials/gmail_credential.json
+
+scopes:
+  gmail: https://www.googleapis.com/auth/gmail.readonly
+  sheets:
+    - https://www.googleapis.com/auth/spreadsheets
+    - https://www.googleapis.com/auth/drive
+  docs: https://www.googleapis.com/auth/documents
+  calendar:
+    - https://www.googleapis.com/auth/calendar
+  drive: https://www.googleapis.com/auth/drive
+  form: https://www.googleapis.com/auth/forms.body
+
+bindings:
+  gmail_cred:
+    scope: gmail
+
+  sheets_cred:
+    scope: sheets
+
+  docs_cred:
+    scope: docs
+
+  calendar_cred:
+    scope: calendar
+
+  drive_cred:
+    scope: drive
+
+  form_cred:
+    scope: form
