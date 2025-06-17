@@ -10,7 +10,7 @@ venv/
 
 # Credentials
 credentials/
-auth_config.yaml
+config/auth_config.yaml
 
 # Logs
 *.log

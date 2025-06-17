@@ -11,8 +11,12 @@ class Fetcher(ABC):
     def fetch_data(self) -> DataWrapper:
         pass
 
-    @classmethod
-    def get_operations(cls):
+    def initialize(self):
+        """Optional setup logic after instantiation."""
+        pass
+
+    
+    def get_operations(self):
         """Optionally list available fetch operations."""
         return {}
 
@@ -24,7 +28,11 @@ class Writer(ABC):
     def write_data(self, data: DataWrapper) -> None:
         pass
 
-    @classmethod
-    def get_operations(cls):
+    def initialize(self):
+        """Optional setup logic after instantiation."""
+        pass
+
+    
+    def get_operations(self):
         """Optionally list available write operations."""
         return {}

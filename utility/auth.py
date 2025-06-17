@@ -3,7 +3,7 @@ import json
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.oauth2.service_account import Credentials as ServiceAccountCredentials
 
-def get_credentials(service_name, config_file="auth_config.yaml"):
+def get_credentials(service_name, config_file="config/auth_config.yaml"):
     # Load YAML config
     with open(config_file, "r") as f:
         config = yaml.safe_load(f)

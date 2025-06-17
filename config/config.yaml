@@ -1,0 +1,95 @@
+# fetchers:
+#   - name: "Fetch Company Doc"
+#     class: fetchers.doc_fetcher.DocsFetcher
+#     enabled: true
+#     params:
+#       document_id: "1vCiKVeZJ-eu5k7mXCWLEHoKklCEnjklmcWSMGI2P-vc"
+
+#   # - class: fetchers.api_fetcher.ApiFetcher
+#   #   params:
+#   #     endpoint: "https://jsonplaceholder.typicode.com/posts"
+
+# writers:
+#   - name: "Fetch Company Doc"
+#     class: writers.sheet_writer.SheetsWriter
+#     enabled: true
+#     params:
+#       sheet_id: "1QQ5vdkowV-QHu4-awkiM-Mq06lQahY0NaunrDXFwQnw"
+#       mode: "append"  # custom param used by your writer
+
+#   # - class: writers.api_writer.ApiWriter
+#   #   params:
+#   #     endpoint: "https://example.com/api/store"
+
+
+pipeline:
+  - name: "Fetch or Write to Google Sheet"
+    enabled: false
+    fetcher:
+      class: fetchers.sheets_fetcher.SheetsFetcher
+      operation: fetch_data
+      params:
+        spreadsheet_id: "1B_DrTxQFaWSRxWeTc7k0Bq6_GP2a2uwcLGZH6BoHaOc"
+        range_name: "Sheet1!A1:D10"
+        service_name: "sheets_cred"  # must match key in auth_config.yaml
+
+    writers:
+      - class: writers.sheet_writer.SheetsWriter
+        operation: write_data
+        params:
+          sheet_id: "1Q7UC0jNO2rJBfpVTP2h1QyA7YPi1f5zURVkRj4xTeGM"
+          mode: "append"
+          service_name: "sheets_cred"
+
+
+  - name: "Fetch or write to google doc"
+    enabled: false
+    fetcher:
+      class: fetchers.doc_fetcher.DocsFetcher
+      operation: get_document_title
+      params:
+        doc_id: "1vCiKVeZJ-eu5k7mXCWLEHoKklCEnjklmcWSMGI2P-vc"
+        service_name: "docs_cred"
+      # operation_params:
+      #   heading: "What is Lorem Ipsum?"
+    writers:
+      - class: writers.doc_writer.DocsWriter
+        operation: set_document_title
+        params:
+          doc_id: "1QNvMpVy9-VMzlXsjdaOulXy-kSfcHlq941Z9q4y2SfM"
+          service_name: "docs_cred"
+        # operation_params:
+        #   text: "My name is Aindrila"
+        #   level: 1
+
+  - name: "Fetch or write to google calendar"
+    enabled: true
+    fetcher:
+      class: fetchers.calendar_fetcher.GoogleCalendarFetcher
+      operation: get_upcoming_event
+      params:
+        service_name: "calendar_cred"
+      # operation_params:
+      #   summary: "Sample Event11111"
+      #   description: "This is a sample event description."
+      #   start:
+      #     dateTime: "2025-06-18T10:00:00Z"
+      #     timeZone: "UTC"
+      #   end:
+      #     dateTime: "2025-06-18T11:00:00Z"
+      #     timeZone: "UTC"
+      #   attendees:
+      #     - email: "aindrilapatra2019@gmail.com"
+      #   reminders:
+      #     useDefault: true
+    writers:
+      - class: writers.calendar_writer.GoogleCalendarWriter
+        operation: update_event
+        params:
+          service_name: "calendar_cred"
+        operation_params:
+          event_id: "ug1bd32r7d1e08jpeiff66vq00"  # <-- ID of the event you want to update
+          event:
+            - summary: "Updated Meeting Title"
+              description: "This is an updated event description."
+
