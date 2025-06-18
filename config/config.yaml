@@ -63,7 +63,7 @@ pipeline:
         #   level: 1
 
   - name: "Fetch or write to google calendar"
-    enabled: true
+    enabled: false
     fetcher:
       class: fetchers.calendar_fetcher.GoogleCalendarFetcher
       operation: get_upcoming_event
@@ -92,4 +92,50 @@ pipeline:
           event:
             - summary: "Updated Meeting Title"
               description: "This is an updated event description."
+
+  - name: "Fetch or write to google drive"
+    enabled: false
+    fetcher:
+      class: fetchers.drive_fetcher.DriveFetcher
+      operation: fetch_file_id_by_name
+      params:
+        service_name: "drive_cred"
+      operation_params:
+        filename: "cat"
+        parent_folder_id: "1gzM8pb6zejCMSQRYOYMGezRpGZylhAG4"
+        exact_match: false
+    writers:
+      - class: writers.drive_writer.DriveWriter
+        operation: share_file_with_email
+        params:
+          service_name: "drive_cred"
+        operation_params:
+          email: "aindrilapatra2019@gmail.com"
+          role: "writer"
+
+  - name: "Fetch or write to google form"
+    enabled: true
+    fetcher:
+      class: fetchers.form_fetcher.FormFetcher
+      operation: fetch_questions_only
+      params:
+        form_id: ""
+        service_name: "form_cred"
+      operation_params:
+          info:
+            title: "Customer Feedback Survey"
+            documentTitle: "Feedback_Form_June"
+            description: "Please fill out this form to help us improve our services."
+    writers:
+      - class: writers.form_writer.FormWriter
+        operation: write_data
+        params:
+          form_id: ""
+          service_name: "form_cred"
+        # operation_params:
+        #   info:
+        #     title: "Customer Feedback Survey"
+        #     description: "This is my form"
+          
+
 
