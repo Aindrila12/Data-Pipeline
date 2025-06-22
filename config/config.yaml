@@ -113,29 +113,90 @@ pipeline:
           email: "aindrilapatra2019@gmail.com"
           role: "writer"
 
-  - name: "Fetch or write to google form"
-    enabled: true
-    fetcher:
-      class: fetchers.form_fetcher.FormFetcher
-      operation: fetch_questions_only
-      params:
-        form_id: ""
-        service_name: "form_cred"
-      operation_params:
-          info:
-            title: "Customer Feedback Survey"
-            documentTitle: "Feedback_Form_June"
-            description: "Please fill out this form to help us improve our services."
-    writers:
-      - class: writers.form_writer.FormWriter
-        operation: write_data
-        params:
-          form_id: ""
-          service_name: "form_cred"
+  # - name: "Fetch or write to google form"
+  #   enabled: true
+  #   fetcher:
+  #     class: fetchers.form_fetcher.FormFetcher
+  #     operation: fetch_questions_only
+  #     params:
+  #       form_id: ""
+  #       service_name: "form_cred"
+  #     operation_params:
+  #         info:
+  #           title: "Customer Feedback Survey"
+  #           documentTitle: "Feedback_Form_June"
+  #           description: "Please fill out this form to help us improve our services."
+  #   writers:
+  #     - class: writers.form_writer.FormWriter
+  #       operation: write_data
+  #       params:
+  #         form_id: ""
+  #         service_name: "form_cred"
         # operation_params:
         #   info:
         #     title: "Customer Feedback Survey"
         #     description: "This is my form"
+
+  # - name: "Create questions in a Google Form"
+  #   enabled: true
+
+  #   fetcher:
+  #     class: fetchers.form_fetcher.FormFetcher
+  #     operation: fetch_questions_only
+  #     params:
+  #       form_id: ""  # No existing form used for fetcher
+  #       service_name: "form_cred"
+  #     operation_params:
+  #       structure:
+  #         - title: "How satisfied are you with our service?"
+  #           questionItem:
+  #             question:
+  #               required: true
+  #               choiceQuestion:
+  #                 type: "RADIO"
+  #                 options:
+  #                   - value: "Very Satisfied"
+  #                   - value: "Satisfied"
+  #                   - value: "Neutral"
+  #                   - value: "Dissatisfied"
+  #                   - value: "Very Dissatisfied"
+  #                 shuffle: false
+
+  #         - title: "What can we improve?"
+  #           questionItem:
+  #             question:
+  #               required: false
+  #               textQuestion: {}
+
+  #   writers:
+  #     - class: writers.form_writer.FormWriter
+  #       operation: create_questions
+  #       params:
+  #         form_id: "1I6KDNWrLG7uBDu2cMQV5hx5GLjhoZYwwIp2DOxgLqwg"
+  #         service_name: "form_cred"
+
+  - name: "Create questions in a Google Form"
+    enabled: true
+
+    fetcher:
+      class: fetchers.form_fetcher.FormFetcher
+      operation: fetch_data
+      params:
+        form_id: "1I6KDNWrLG7uBDu2cMQV5hx5GLjhoZYwwIp2DOxgLqwg"  # No existing form used for fetcher
+        service_name: "form_cred"
+
+    writers:
+      - class: writers.form_writer.FormWriter
+        operation: set_publish_settings
+        params:
+          form_id: "1I6KDNWrLG7uBDu2cMQV5hx5GLjhoZYwwIp2DOxgLqwg"
+          service_name: "form_cred"
+        operation_params:
+          settings:
+            publishSettings:
+              anyone_can_respond: true
+              can_edit: false
+              can_view_responses: true
           
 
 

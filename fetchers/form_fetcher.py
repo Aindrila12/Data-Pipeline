@@ -45,16 +45,16 @@ class FormFetcher(Fetcher):
         return DataWrapper(data=structure)
 
 
-    def fetch_questions_only(self) -> DataWrapper:
+    def fetch_questions_only(self, structure: list) -> DataWrapper:
         """
-        Extracts and returns only question items from the form.
+        Returns the list of questions defined in config.yaml under operation_params.structure.
+        This allows question creation to be handled via config without needing a pre-existing form structure.
         """
-        form = self.service.forms().get(formId=self.form_id).execute()
-        questions = []
-        for item in form.get("items", []):
-            if "questionItem" in item:
-                questions.append(item)
-        return DataWrapper(data=questions)
+        if not structure:
+            raise ValueError("No question structure provided in operation_params.structure")
+        
+        return DataWrapper(data=structure)
+
 
 
     def get_operations(self):

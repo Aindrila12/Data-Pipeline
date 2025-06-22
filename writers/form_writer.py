@@ -71,14 +71,14 @@ class FormWriter(Writer):
         return DataWrapper(data=new_form)
 
 
-    def set_publish_settings(self, data: DataWrapper, settings: dict) -> None:
-        """
-        Update form publish settings.
-        Args:
-            settings: dict matching Forms API settings schema.
-        """
-        self.service.forms().setPublishSettings(formId=self.form_id, body=settings).execute()
-        print("[FormWriter] Publish settings updated.")
+    # def set_publish_settings(self, data: DataWrapper, settings: dict) -> None:
+    #     """
+    #     Update form publish settings.
+    #     Args:
+    #         settings: dict matching Forms API settings schema.
+    #     """
+    #     self.service.forms().setPublishSettings(formId=self.form_id, body=settings).execute()
+    #     print("[FormWriter] Publish settings updated.")
 
     def create_questions(self, data: DataWrapper) -> None:
         """
@@ -134,6 +134,6 @@ class FormWriter(Writer):
         return {
             "batch_update": self.batch_update,
             "write_data": self.write_data,
-            "set_publish_settings": self.set_publish_settings,
+            # "set_publish_settings": self.set_publish_settings,
             "create_questions": self.create_questions
         }

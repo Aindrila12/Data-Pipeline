@@ -54,7 +54,7 @@ def process_pipeline(config_path: str):
 
         logger.info(f"Fetching data using operation: {fetch_operation} with params: {fetch_operation_params}")
         data: DataWrapper = fetch_method(**fetch_operation_params)  # ✅ UPDATED
-        print("********data********", data)
+        print("********data********", data.data)
 
         # --- Writers ---
         for writer_cfg in task.get("writers", []):
