@@ -28,21 +28,23 @@ class GoogleClassroomWriter(Writer):
         """
         Create coursework in a specific course.
         """
+        print(">>>>>>>>data.data>>>>>>>>", data.data)
         for cw in data.data:
-            self.service.courses().courseWork().create(courseId=course_id, body=cw).execute()
+            if course_id == cw["id"]:
+                self.service.courses().courseWork().create(courseId=course_id, body=cw).execute()
 
-    def delete_course(self, data: DataWrapper):
-        """
-        Delete one or more courses by ID.
-        """
-        for course in data.data:
-            course_id = course.get("id")
-            if course_id:
-                self.service.courses().delete(id=course_id).execute()
+    # def delete_course(self, data: DataWrapper):
+    #     """
+    #     Delete one or more courses by ID.
+    #     """
+    #     for course in data.data:
+    #         print(">>>>>>>>course>>>>>>>>", course)
+    #         course_id = course.get("courseId")
+    #         if course_id:
+    #             self.service.courses().delete(id=course_id).execute()
 
     def get_operations(self):
         return {
             "write_data": self.write_data,
             "create_course_work": self.create_course_work,
-            "delete_course": self.delete_course,
         }

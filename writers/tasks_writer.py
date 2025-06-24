@@ -16,30 +16,31 @@ class GoogleTasksWriter(Writer):
         creds = get_credentials(self.service_name)
         self.service = build("tasks", "v1", credentials=creds)
 
-    def create_task_list(self, data: DataWrapper) -> DataWrapper:
+    def write_data(self, data: DataWrapper) -> DataWrapper:
         task_list = self.service.tasklists().insert(body=data.data).execute()
         return DataWrapper(data=task_list)
 
     def create_task(self, data: DataWrapper, tasklist_id: str) -> None:
-        for task in data.data:
-            self.service.tasks().insert(tasklist=tasklist_id, body=task).execute()
+        self.service.tasks().insert(tasklist=tasklist_id, body=data.data).execute()
 
     def update_task(self, data: DataWrapper, tasklist_id: str, task_id: str, updates: dict) -> None:
-        self.service.tasks().patch(
-            tasklist=tasklist_id,
-            task=task_id,
-            body=updates
-        ).execute()
-
-    def delete_task(self, data: DataWrapper, tasklist_id: str) -> None:
         for task in data.data:
-            task_id = task.get("id")
-            if task_id:
+            if task_id == task["id"]:
+                self.service.tasks().patch(
+                    tasklist=tasklist_id,
+                    task=task_id,
+                    body=updates
+                ).execute()
+
+    def delete_task(self, data: DataWrapper, tasklist_id: str, task_id: str) -> None:
+        for task in data.data:
+            task_id1 = task.get("id")
+            if task_id1 == task_id:
                 self.service.tasks().delete(tasklist=tasklist_id, task=task_id).execute()
 
     def get_operations(self):
         return {
-            "create_task_list": self.create_task_list,
+            "write_data": self.write_data,
             "create_task": self.create_task,
             "update_task": self.update_task,
             "delete_task": self.delete_task,

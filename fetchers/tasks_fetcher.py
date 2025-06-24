@@ -20,12 +20,26 @@ class GoogleTasksFetcher(Fetcher):
         result = self.service.tasklists().list(maxResults=100).execute()
         return DataWrapper(data=result.get("items", []))
 
-    def fetch_tasks(self, tasklist_id: str) -> DataWrapper:
+    def fetch_data(self, tasklist_id: str) -> DataWrapper:
         result = self.service.tasks().list(tasklist=tasklist_id, showCompleted=True).execute()
         return DataWrapper(data=result.get("items", []))
+    
+    def get_sample_task_list(self, **task_list_info) -> DataWrapper:
+        """
+        Return a wrapped task list body passed via config.
+
+        Args:
+            task_list_info (dict): Fields for the task list (e.g., title).
+
+        Returns:
+            DataWrapper: Wrapped task list creation data.
+        """
+        return DataWrapper(data=task_list_info)
+
 
     def get_operations(self):
         return {
             "fetch_task_lists": self.fetch_task_lists,
-            "fetch_tasks": self.fetch_tasks,
+            "fetch_data": self.fetch_data,
+            "get_sample_task_list": self.get_sample_task_list
         }

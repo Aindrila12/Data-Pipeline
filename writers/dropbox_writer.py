@@ -14,7 +14,7 @@ class DropboxWriter(Writer):
     def initialize(self):
         self.client = dropbox.Dropbox(self.access_token)
 
-    def upload_file(self, data: DataWrapper, dest_path: str, mode: str = "add"):
+    def write_data(self, data: DataWrapper, dest_path: str, mode: str = "add"):
         """
         Upload a file.
 
@@ -47,7 +47,7 @@ class DropboxWriter(Writer):
 
     def get_operations(self):
         return {
-            "upload_file": self.upload_file,
+            "write_data": self.write_data,
             "create_folder": self.create_folder,
             "move": self.move,
             "delete": self.delete,

@@ -29,7 +29,7 @@ class GoogleChatFetcher(Fetcher):
         creds = get_credentials(self.service_name)
         self.service = build("chat", "v1", credentials=creds)
 
-    def get_sample_message(self, **message_dict) -> DataWrapper:
+    def fetch_data(self, **message_dict) -> DataWrapper:
         """
         Return a wrapped message dictionary passed via config.
 
@@ -43,5 +43,5 @@ class GoogleChatFetcher(Fetcher):
 
     def get_operations(self):
         return {
-            "get_sample_message": self.get_sample_message,
+            "fetch_data": self.fetch_data,
         }

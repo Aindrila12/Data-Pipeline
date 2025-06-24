@@ -16,7 +16,7 @@ class DropboxFetcher(Fetcher):
     def initialize(self):
         self.client = dropbox.Dropbox(self.access_token)
 
-    def list_folder(self, path: str = "", recursive: bool = False) -> DataWrapper:
+    def fetch_data(self, path: str = "", recursive: bool = False) -> DataWrapper:
         """
         List files/folders in the given Dropbox path.
         """
@@ -36,9 +36,24 @@ class DropboxFetcher(Fetcher):
         md, resp = self.client.files_download(path)
         content = resp.content
         return DataWrapper(data={"metadata": md, "content": content})
+    
+    def get_file_content(self, file_path: str) -> DataWrapper:
+        """
+        Read binary content from a local file and return wrapped data.
+
+        Args:
+            file_path: Local file path to read from.
+
+        Returns:
+            DataWrapper with {"content": file_bytes}
+        """
+        with open(file_path, "rb") as f:
+            content = f.read()
+        return DataWrapper(data={"content": content})
 
     def get_operations(self):
         return {
-            "list_folder": self.list_folder,
+            "fetch_data": self.fetch_data,
             "download_file": self.download_file,
+            "get_file_content": self.get_file_content
         }

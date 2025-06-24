@@ -176,7 +176,7 @@ pipeline:
   #         service_name: "form_cred"
 
   - name: "Create questions in a Google Form"
-    enabled: true
+    enabled: false
 
     fetcher:
       class: fetchers.form_fetcher.FormFetcher
@@ -197,6 +197,280 @@ pipeline:
               anyone_can_respond: true
               can_edit: false
               can_view_responses: true
+
+
+  - name: "Read and write to google slide"
+    enabled: false
+
+    fetcher:
+      class: fetchers.slide_fetcher.GoogleSlidesFetcher
+      operation: get_presentation_data
+      params:
+        presentation_id: "1GMZUb7fRcqq8HMGmg8DTAj5ute3iEmgTBZCXv_sdKyY"
+        service_name: "slides_cred"
+      operation_params:
+        title: "Marketing Strategy 2025"
+
+    writers:
+      - class: writers.slide_writer.GoogleSlidesWriter
+        operation: write_data
+        params:
+          presentation_id: ""
+          service_name: "slides_cred"
+        
+
+  - name: "Read and write to google slide"
+    enabled: false
+
+    fetcher:
+      class: fetchers.slide_fetcher.GoogleSlidesFetcher
+      operation: fetch_data
+      params:
+        presentation_id: "1GMZUb7fRcqq8HMGmg8DTAj5ute3iEmgTBZCXv_sdKyY"
+        service_name: "slides_cred"
+
+    writers:
+      - class: writers.slide_writer.GoogleSlidesWriter
+        operation: insert_textbox
+        params:
+          presentation_id: "1GMZUb7fRcqq8HMGmg8DTAj5ute3iEmgTBZCXv_sdKyY"
+          service_name: "slides_cred"
+        operation_params:
+          text: "Welcome to the Presentation!"
+          x: 100
+          y: 150
+
+  - name: "Read and write to google slide"
+    enabled: false
+
+    fetcher:
+      class: fetchers.slide_fetcher.GoogleSlidesFetcher
+      operation: fetch_presentation_metadata
+      params:
+        presentation_id: "1GMZUb7fRcqq8HMGmg8DTAj5ute3iEmgTBZCXv_sdKyY"
+        service_name: "slides_cred"
+
+    writers:
+      - class: writers.slide_writer.GoogleSlidesWriter
+        operation: insert_textbox
+        params:
+          presentation_id: "1GMZUb7fRcqq8HMGmg8DTAj5ute3iEmgTBZCXv_sdKyY"
+          service_name: "slides_cred"
+        operation_params:
+          text: "Welcome to the Presentation!"
+          x: 100
+          y: 150
+
+  - name: "Send message to Google Chat"
+    enabled: false
+
+    fetcher:
+      class: fetchers.chat_fetcher.GoogleChatFetcher
+      operation: fetch_data
+      params:
+        space_id: "AAQA-NQcI7k"  # Replace with your actual Google Chat space ID
+        service_name: "chat_cred"
+      operation_params:
+        text: "Hello Alay! This is a message from the pipeline."
+
+    writers:
+      - class: writers.chat_writer.GoogleChatWriter
+        operation: write_data
+        params:
+          space_id: "AAQA-NQcI7k"  # Same space ID
+          service_name: "chat_cred"
+
+
+  - name: "Create course in Google Classroom"
+    enabled: false
+
+    fetcher:
+      class: fetchers.classroom_fetcher.GoogleClassroomFetcher
+      operation: get_sample_course
+      params:
+        service_name: "classroom_cred"
+      operation_params:
+        name: "Introduction to AI"
+        section: "Period 1"
+        descriptionHeading: "AI Basics"
+        description: "This course introduces students to Artificial Intelligence."
+        room: "Room 101"
+        ownerId: "me"   # or actual teacher's email if using domain-wide delegation
+        courseState: "PROVISIONED"
+
+    writers:
+      - class: writers.classroom_writer.GoogleClassroomWriter
+        operation: write_data
+        params:
+          service_name: "classroom_cred"
+
+  - name: "Create course in Google Classroom"
+    enabled: false
+
+    fetcher:
+      class: fetchers.classroom_fetcher.GoogleClassroomFetcher
+      operation: fetch_data
+      params:
+        service_name: "classroom_cred"
+
+    writers:
+      - class: writers.classroom_writer.GoogleClassroomWriter
+        operation: create_course_work
+        params:
+          service_name: "classroom_cred"
+        operation_params:
+          course_id: "782533316121"  # Replace with actual course ID
+
+  - name: "Create course in Google Classroom"
+    enabled: false
+
+    fetcher:
+      class: fetchers.classroom_fetcher.GoogleClassroomFetcher
+      operation: fetch_course_work
+      params:
+        service_name: "classroom_cred"
+      operation_params:
+          course_id: "782533316121" 
+
+    writers:
+      - class: writers.classroom_writer.GoogleClassroomWriter
+        operation: delete_course
+        params:
+          service_name: "classroom_cred"
+
+  - name: "Create Google Task List"
+    enabled: false
+
+    fetcher:
+      class: fetchers.tasks_fetcher.GoogleTasksFetcher
+      operation: get_sample_task_list
+      params:
+        service_name: "tasks_cred"
+      operation_params:
+        title: "Project Deadlines"
+
+    writers:
+      - class: writers.tasks_writer.GoogleTasksWriter
+        operation: write_data
+        params:
+          service_name: "tasks_cred"
+
+  - name: "Create Google Task List"
+    enabled: false
+
+    fetcher:
+      class: fetchers.tasks_fetcher.GoogleTasksFetcher
+      operation: get_sample_task_list
+      params:
+        service_name: "tasks_cred"
+      operation_params:
+        title: "Complete the integration"
+        notes: "Remember to write unit tests"
+        due: "2025-06-30T23:59:00.000Z"  # Must be RFC 3339 formatted
+
+    writers:
+      - class: writers.tasks_writer.GoogleTasksWriter
+        operation: create_task
+        params:
+          service_name: "tasks_cred"
+        operation_params:
+          tasklist_id: "cDBqUUdXSWNIbEpYTHlIXw"
+
+  - name: "Create Google Task List"
+    enabled: false
+
+    fetcher:
+      class: fetchers.tasks_fetcher.GoogleTasksFetcher
+      operation: fetch_data
+      params:
+        service_name: "tasks_cred"
+      operation_params:
+        tasklist_id: "cDBqUUdXSWNIbEpYTHlIXw"
+
+    writers:
+      - class: writers.tasks_writer.GoogleTasksWriter
+        operation: update_task
+        params:
+          service_name: "tasks_cred"
+        operation_params:
+          tasklist_id: "cDBqUUdXSWNIbEpYTHlIXw"
+          task_id: "U3owb1lRNUEwX1FoZXNLNw"
+          updates:
+            title: "Updated Task Title"
+            notes: "Updated notes"
+            due: "2025-07-01T17:00:00.000Z"
+            status: "needsAction"
+
+  - name: "Create Google Task List"
+    enabled: false
+
+    fetcher:
+      class: fetchers.tasks_fetcher.GoogleTasksFetcher
+      operation: fetch_data
+      params:
+        service_name: "tasks_cred"
+      operation_params:
+          tasklist_id: "cDBqUUdXSWNIbEpYTHlIXw"
+
+    writers:
+      - class: writers.tasks_writer.GoogleTasksWriter
+        operation: delete_task
+        params:
+          service_name: "tasks_cred"
+        operation_params:
+          tasklist_id: "cDBqUUdXSWNIbEpYTHlIXw"
+          task_id: "U3owb1lRNUEwX1FoZXNLNw"
+
+  - name: "Create Google Keep Note"
+    enabled: false
+
+    fetcher:
+      class: fetchers.keep_fetcher.GoogleKeepFetcher
+      operation: get_sample_note
+      params:
+        service_name: "keep_cred"
+      operation_params:
+        title: "Grocery List"
+        body:
+          # text:
+          #   text: "Discuss project timelines and deliverables."
+          list:
+            listItems:
+              - text: "Milk"
+                checked: false
+              - text: "Eggs"
+                checked: true
+
+    writers:
+      - class: writers.keep_writer.GoogleKeepWriter
+        operation: write_data
+        params:
+          service_name: "keep_cred"
+
+  - name: "Upload File to Dropbox"
+    enabled: true
+
+    fetcher:
+      class: fetchers.dropbox_fetcher.DropboxFetcher
+      operation: get_file_content
+      params:
+        service_name: "dropbox_cred"
+      operation_params:
+        file_path: "/home/aindrila/Pictures/cat1.jpg"
+
+    writers:
+      - class: writers.dropbox_writer.DropboxWriter
+        operation: write_data
+        params:
+          service_name: "dropbox_cred"
+        operation_params:
+          dest_path: "/Photos/cat1.jpg"
+          mode: "overwrite"
+
+
+
+
+
           
 
 

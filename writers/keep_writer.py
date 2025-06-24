@@ -16,7 +16,7 @@ class GoogleKeepWriter(Writer):
         creds = get_credentials(self.service_name)
         self.service = build("keep", "v1", credentials=creds)
 
-    def create_note(self, data: DataWrapper) -> DataWrapper:
+    def write_data(self, data: DataWrapper) -> DataWrapper:
         """
         Create text or list note(s).
         Expects data.data to be a list of note dicts:
@@ -43,6 +43,6 @@ class GoogleKeepWriter(Writer):
 
     def get_operations(self):
         return {
-            "create_note": self.create_note,
+            "write_data": self.write_data,
             "delete_note": self.delete_note,
         }
