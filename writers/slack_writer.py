@@ -14,27 +14,43 @@ class SlackWriter(Writer):
     def initialize(self):
         self.client = WebClient(token=self.token)
 
-    def post_message(self, data: DataWrapper, channel: str, text: str, thread_ts: str = None):
+    def write_data(self, data: DataWrapper) -> None:
         """
         Send a Slack message (optionally to a thread).
+        Expects:
+            data.data = {
+                "channel_id": str,
+                "message": {
+                    "channel": str,
+                    "text": str,
+                    "thread_ts": Optional[str]
+                }
+            }
         """
-        self.client.chat_postMessage(channel=channel, text=text, thread_ts=thread_ts)
+        message = data.data["message"]
+        self.client.chat_postMessage(
+            channel=message["channel"],
+            text=message["text"],
+            thread_ts=message.get("thread_ts")  # Optional
+        )
 
-    def update_message(self, data: DataWrapper, channel: str, ts: str, text: str):
-        """
-        Update an existing message by timestamp.
-        """
-        self.client.chat_update(channel=channel, ts=ts, text=text)
 
-    def delete_message(self, data: DataWrapper, channel: str, ts: str):
+    # def update_message(self, data: DataWrapper, channel: str, ts: str, text: str):
+    #     """
+    #     Update an existing message by timestamp.
+    #     """
+    #     self.client.chat_update(channel=channel, ts=ts, text=text)
+
+    def delete_message(self, data: DataWrapper):
         """
         Delete a message by its channel and timestamp.
         """
-        self.client.chat_delete(channel=channel, ts=ts)
+        print("888888888888888", data.data)
+        self.client.chat_delete(channel=data.data["channel"], ts=data.data["ts"])
 
     def get_operations(self):
         return {
-            "post_message": self.post_message,
-            "update_message": self.update_message,
+            "write_data": self.write_data,
+            # "update_message": self.update_message,
             "delete_message": self.delete_message,
         }

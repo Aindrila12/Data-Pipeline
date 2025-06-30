@@ -5,20 +5,35 @@ from core.data_wrapper import DataWrapper
 
 class DropboxFetcher(Fetcher):
     """
-    Fetch data from Dropbox: list folder contents, download files.
+    Fetch data from Dropbox: list folder contents, download files, read local files.
     """
+
     def __init__(self, access_token: str = None):
-        # Option 1: direct token
-        # Option 2: use generic auth.get_credentials if available
+        """
+        Initialize Dropbox client.
+
+        Args:
+            access_token: Dropbox API token (optional if using get_credentials)
+        """
         self.access_token = access_token or get_credentials("dropbox_cred")
         self.client = None
 
     def initialize(self):
+        """
+        Initialize the Dropbox client.
+        """
         self.client = dropbox.Dropbox(self.access_token)
 
     def fetch_data(self, path: str = "", recursive: bool = False) -> DataWrapper:
         """
         List files/folders in the given Dropbox path.
+
+        Args:
+            path: Dropbox folder path.
+            recursive: If True, list subfolders recursively.
+
+        Returns:
+            DataWrapper containing file/folder metadata entries.
         """
         res = self.client.files_list_folder(path=path, recursive=recursive)
         entries = res.entries
@@ -27,16 +42,22 @@ class DropboxFetcher(Fetcher):
         while res.has_more:
             res = self.client.files_list_folder_continue(res.cursor)
             entries.extend(res.entries)
+
         return DataWrapper(data=entries)
 
     def download_file(self, path: str) -> DataWrapper:
         """
-        Download file contents; returns bytes.
+        Download file contents from Dropbox.
+
+        Args:
+            path: Dropbox file path to download.
+
+        Returns:
+            DataWrapper with file metadata and content bytes.
         """
         md, resp = self.client.files_download(path)
-        content = resp.content
-        return DataWrapper(data={"metadata": md, "content": content})
-    
+        return DataWrapper(data={"metadata": md, "content": resp.content})
+
     def get_file_content(self, file_path: str) -> DataWrapper:
         """
         Read binary content from a local file and return wrapped data.
@@ -55,5 +76,5 @@ class DropboxFetcher(Fetcher):
         return {
             "fetch_data": self.fetch_data,
             "download_file": self.download_file,
-            "get_file_content": self.get_file_content
+            "get_file_content": self.get_file_content,
         }

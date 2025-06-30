@@ -448,13 +448,13 @@ pipeline:
           service_name: "keep_cred"
 
   - name: "Upload File to Dropbox"
-    enabled: true
+    enabled: false
 
     fetcher:
       class: fetchers.dropbox_fetcher.DropboxFetcher
       operation: get_file_content
       params:
-        service_name: "dropbox_cred"
+        access_token: "sl.u.AF3kPPMXn7_kJ2loKE24-uc2RgMN2V6OrnQJHjUw4N0v42mZYCW3bs4dJ1uUPPHWUZI9fblVkjVfkT0grDjQWO7D3j5IsSxWFePnEinD15BcMd6Y_K9_YSN7xVJTuHkZ-ZUXvelCjRhg9RN2Lz_VDYvwmi6VpahAwgxbi58mP4ajdKzuXEZT51KFGDQ8bW28WtXNAPablgPUqQPCbpd_ZBi6jv1DnYvntMmGlGrB3dFl_CpP-lQbDucDSVPlgjS1JDpQ3Mr5X1IlmvrIa1OSd49RkRaQsHkRFogA0VNlQGiscPj3kO7JhUh2xWtmKsDLqcU66tZu8XV6UY_5CqeO7ha5zdErwgoVbf8GnRV5-dsIe0oyBIEULRk8ZWdG6HvDeujdi6R3y4CCMn0hKS9l5pNKgfqEoj2bRFu5O1uNKuMDGbkIzGfRgJCGawaz0rN2Cft_B9ugSu0cEx8B637hLI3c7SIJipdG3Qu6fkDtqbdCV7Po7UrzG4pJ9R3Pl9WUTqVbglUBg6XXykprmuRkHGBORd98wlTDiW_60z5_03Vue6a7nQGvBqyyqScbNlaym7-T-RCXXtGnzhm_Imdstobh1GGAAK7kbiLZHrdaBe1-99aDp5UREi7t3qieJwwxQZ6YDFBtGTacMoyB77KahiA2XW3PAr8rBJqHV8q9419SFT0QZsLARJIZx8WMP-4l6hhv1zqfkh3ppq1tp4Ihvzpq0Fu-WowxS5ZgT5bANwfJYcje2jG1bAPcyTRtqFwCq8JgMIUwsRMa_rPOAtbObq-L8IALe6uvjAFYVesGunGR0H-X-UaQXhyHnFBvlkVj40Tz0j-_zoz0O-bHoFDg25vMYNaq97SQ-sopxl6qAGxp99AIVj_gGRmILpwpB7jeS1muwsa8miQ5wgahk-0ChfEDqeHplvvlpahebOamlniqyxxld4hnsqtgOMkAnmw6qrY4KkRtqUhoBZSrQMcGrAdD_2mBluNbY-VY5jrJeyRgEv4LdJUoLYWz7QfluSY5MfizZEtlGXIYvZrF88rnPiznoPq4Y2Hg7vEGKObFYpZ_271-tl-Tub4yHrdgtQve0-xKjIV4rAkyH6k3MDHYrxa-UhX4oI_bITqMUfUFk204AsvEm3SD8P2l1qgnJaHvUujdMShHCP7n6D-88Ku8C8VZ0X5Eo7TBA2n6O6lxTV1UOxharizoLE6QFrsjrhFrJFE9IqqIR1kRy3Hf8gsD5cWUirxXsf6kDYvJRZRZDxp_eii3DsuqocRRgBIHK_9UqB0oTt6DIRC6WlsKcxud6pP1mR7s9I0AfILImV6pOaolrnTaK-sbDzbiKEcvWyFreGPTuF-wh4J0iY5tkCUZO_a-nzhx9pmjkj3KAbTW1n1ymPdNcDI-Lrueax5SEsEVpZGhT_CwEaG7yT8rvoVD6JaKzC1CRp6cu6Q0z0Lr2PeZxA"
       operation_params:
         file_path: "/home/aindrila/Pictures/cat1.jpg"
 
@@ -462,10 +462,75 @@ pipeline:
       - class: writers.dropbox_writer.DropboxWriter
         operation: write_data
         params:
-          service_name: "dropbox_cred"
+          access_token: "sl.u.AF3kPPMXn7_kJ2loKE24-uc2RgMN2V6OrnQJHjUw4N0v42mZYCW3bs4dJ1uUPPHWUZI9fblVkjVfkT0grDjQWO7D3j5IsSxWFePnEinD15BcMd6Y_K9_YSN7xVJTuHkZ-ZUXvelCjRhg9RN2Lz_VDYvwmi6VpahAwgxbi58mP4ajdKzuXEZT51KFGDQ8bW28WtXNAPablgPUqQPCbpd_ZBi6jv1DnYvntMmGlGrB3dFl_CpP-lQbDucDSVPlgjS1JDpQ3Mr5X1IlmvrIa1OSd49RkRaQsHkRFogA0VNlQGiscPj3kO7JhUh2xWtmKsDLqcU66tZu8XV6UY_5CqeO7ha5zdErwgoVbf8GnRV5-dsIe0oyBIEULRk8ZWdG6HvDeujdi6R3y4CCMn0hKS9l5pNKgfqEoj2bRFu5O1uNKuMDGbkIzGfRgJCGawaz0rN2Cft_B9ugSu0cEx8B637hLI3c7SIJipdG3Qu6fkDtqbdCV7Po7UrzG4pJ9R3Pl9WUTqVbglUBg6XXykprmuRkHGBORd98wlTDiW_60z5_03Vue6a7nQGvBqyyqScbNlaym7-T-RCXXtGnzhm_Imdstobh1GGAAK7kbiLZHrdaBe1-99aDp5UREi7t3qieJwwxQZ6YDFBtGTacMoyB77KahiA2XW3PAr8rBJqHV8q9419SFT0QZsLARJIZx8WMP-4l6hhv1zqfkh3ppq1tp4Ihvzpq0Fu-WowxS5ZgT5bANwfJYcje2jG1bAPcyTRtqFwCq8JgMIUwsRMa_rPOAtbObq-L8IALe6uvjAFYVesGunGR0H-X-UaQXhyHnFBvlkVj40Tz0j-_zoz0O-bHoFDg25vMYNaq97SQ-sopxl6qAGxp99AIVj_gGRmILpwpB7jeS1muwsa8miQ5wgahk-0ChfEDqeHplvvlpahebOamlniqyxxld4hnsqtgOMkAnmw6qrY4KkRtqUhoBZSrQMcGrAdD_2mBluNbY-VY5jrJeyRgEv4LdJUoLYWz7QfluSY5MfizZEtlGXIYvZrF88rnPiznoPq4Y2Hg7vEGKObFYpZ_271-tl-Tub4yHrdgtQve0-xKjIV4rAkyH6k3MDHYrxa-UhX4oI_bITqMUfUFk204AsvEm3SD8P2l1qgnJaHvUujdMShHCP7n6D-88Ku8C8VZ0X5Eo7TBA2n6O6lxTV1UOxharizoLE6QFrsjrhFrJFE9IqqIR1kRy3Hf8gsD5cWUirxXsf6kDYvJRZRZDxp_eii3DsuqocRRgBIHK_9UqB0oTt6DIRC6WlsKcxud6pP1mR7s9I0AfILImV6pOaolrnTaK-sbDzbiKEcvWyFreGPTuF-wh4J0iY5tkCUZO_a-nzhx9pmjkj3KAbTW1n1ymPdNcDI-Lrueax5SEsEVpZGhT_CwEaG7yT8rvoVD6JaKzC1CRp6cu6Q0z0Lr2PeZxA"
         operation_params:
           dest_path: "/Photos/cat1.jpg"
-          mode: "overwrite"
+          mode: "add"
+
+  - name: "create folder to Dropbox"
+    enabled: false
+
+    fetcher:
+      class: fetchers.dropbox_fetcher.DropboxFetcher
+      operation: download_file
+      params:
+        access_token: "sl.u.AF3kPPMXn7_kJ2loKE24-uc2RgMN2V6OrnQJHjUw4N0v42mZYCW3bs4dJ1uUPPHWUZI9fblVkjVfkT0grDjQWO7D3j5IsSxWFePnEinD15BcMd6Y_K9_YSN7xVJTuHkZ-ZUXvelCjRhg9RN2Lz_VDYvwmi6VpahAwgxbi58mP4ajdKzuXEZT51KFGDQ8bW28WtXNAPablgPUqQPCbpd_ZBi6jv1DnYvntMmGlGrB3dFl_CpP-lQbDucDSVPlgjS1JDpQ3Mr5X1IlmvrIa1OSd49RkRaQsHkRFogA0VNlQGiscPj3kO7JhUh2xWtmKsDLqcU66tZu8XV6UY_5CqeO7ha5zdErwgoVbf8GnRV5-dsIe0oyBIEULRk8ZWdG6HvDeujdi6R3y4CCMn0hKS9l5pNKgfqEoj2bRFu5O1uNKuMDGbkIzGfRgJCGawaz0rN2Cft_B9ugSu0cEx8B637hLI3c7SIJipdG3Qu6fkDtqbdCV7Po7UrzG4pJ9R3Pl9WUTqVbglUBg6XXykprmuRkHGBORd98wlTDiW_60z5_03Vue6a7nQGvBqyyqScbNlaym7-T-RCXXtGnzhm_Imdstobh1GGAAK7kbiLZHrdaBe1-99aDp5UREi7t3qieJwwxQZ6YDFBtGTacMoyB77KahiA2XW3PAr8rBJqHV8q9419SFT0QZsLARJIZx8WMP-4l6hhv1zqfkh3ppq1tp4Ihvzpq0Fu-WowxS5ZgT5bANwfJYcje2jG1bAPcyTRtqFwCq8JgMIUwsRMa_rPOAtbObq-L8IALe6uvjAFYVesGunGR0H-X-UaQXhyHnFBvlkVj40Tz0j-_zoz0O-bHoFDg25vMYNaq97SQ-sopxl6qAGxp99AIVj_gGRmILpwpB7jeS1muwsa8miQ5wgahk-0ChfEDqeHplvvlpahebOamlniqyxxld4hnsqtgOMkAnmw6qrY4KkRtqUhoBZSrQMcGrAdD_2mBluNbY-VY5jrJeyRgEv4LdJUoLYWz7QfluSY5MfizZEtlGXIYvZrF88rnPiznoPq4Y2Hg7vEGKObFYpZ_271-tl-Tub4yHrdgtQve0-xKjIV4rAkyH6k3MDHYrxa-UhX4oI_bITqMUfUFk204AsvEm3SD8P2l1qgnJaHvUujdMShHCP7n6D-88Ku8C8VZ0X5Eo7TBA2n6O6lxTV1UOxharizoLE6QFrsjrhFrJFE9IqqIR1kRy3Hf8gsD5cWUirxXsf6kDYvJRZRZDxp_eii3DsuqocRRgBIHK_9UqB0oTt6DIRC6WlsKcxud6pP1mR7s9I0AfILImV6pOaolrnTaK-sbDzbiKEcvWyFreGPTuF-wh4J0iY5tkCUZO_a-nzhx9pmjkj3KAbTW1n1ymPdNcDI-Lrueax5SEsEVpZGhT_CwEaG7yT8rvoVD6JaKzC1CRp6cu6Q0z0Lr2PeZxA"
+      operation_params:
+        path: "/Photos/cat1.jpg"
+
+    writers:
+      - class: writers.dropbox_writer.DropboxWriter
+        operation: save_file
+        params:
+          access_token: "sl.u.AF3kPPMXn7_kJ2loKE24-uc2RgMN2V6OrnQJHjUw4N0v42mZYCW3bs4dJ1uUPPHWUZI9fblVkjVfkT0grDjQWO7D3j5IsSxWFePnEinD15BcMd6Y_K9_YSN7xVJTuHkZ-ZUXvelCjRhg9RN2Lz_VDYvwmi6VpahAwgxbi58mP4ajdKzuXEZT51KFGDQ8bW28WtXNAPablgPUqQPCbpd_ZBi6jv1DnYvntMmGlGrB3dFl_CpP-lQbDucDSVPlgjS1JDpQ3Mr5X1IlmvrIa1OSd49RkRaQsHkRFogA0VNlQGiscPj3kO7JhUh2xWtmKsDLqcU66tZu8XV6UY_5CqeO7ha5zdErwgoVbf8GnRV5-dsIe0oyBIEULRk8ZWdG6HvDeujdi6R3y4CCMn0hKS9l5pNKgfqEoj2bRFu5O1uNKuMDGbkIzGfRgJCGawaz0rN2Cft_B9ugSu0cEx8B637hLI3c7SIJipdG3Qu6fkDtqbdCV7Po7UrzG4pJ9R3Pl9WUTqVbglUBg6XXykprmuRkHGBORd98wlTDiW_60z5_03Vue6a7nQGvBqyyqScbNlaym7-T-RCXXtGnzhm_Imdstobh1GGAAK7kbiLZHrdaBe1-99aDp5UREi7t3qieJwwxQZ6YDFBtGTacMoyB77KahiA2XW3PAr8rBJqHV8q9419SFT0QZsLARJIZx8WMP-4l6hhv1zqfkh3ppq1tp4Ihvzpq0Fu-WowxS5ZgT5bANwfJYcje2jG1bAPcyTRtqFwCq8JgMIUwsRMa_rPOAtbObq-L8IALe6uvjAFYVesGunGR0H-X-UaQXhyHnFBvlkVj40Tz0j-_zoz0O-bHoFDg25vMYNaq97SQ-sopxl6qAGxp99AIVj_gGRmILpwpB7jeS1muwsa8miQ5wgahk-0ChfEDqeHplvvlpahebOamlniqyxxld4hnsqtgOMkAnmw6qrY4KkRtqUhoBZSrQMcGrAdD_2mBluNbY-VY5jrJeyRgEv4LdJUoLYWz7QfluSY5MfizZEtlGXIYvZrF88rnPiznoPq4Y2Hg7vEGKObFYpZ_271-tl-Tub4yHrdgtQve0-xKjIV4rAkyH6k3MDHYrxa-UhX4oI_bITqMUfUFk204AsvEm3SD8P2l1qgnJaHvUujdMShHCP7n6D-88Ku8C8VZ0X5Eo7TBA2n6O6lxTV1UOxharizoLE6QFrsjrhFrJFE9IqqIR1kRy3Hf8gsD5cWUirxXsf6kDYvJRZRZDxp_eii3DsuqocRRgBIHK_9UqB0oTt6DIRC6WlsKcxud6pP1mR7s9I0AfILImV6pOaolrnTaK-sbDzbiKEcvWyFreGPTuF-wh4J0iY5tkCUZO_a-nzhx9pmjkj3KAbTW1n1ymPdNcDI-Lrueax5SEsEVpZGhT_CwEaG7yT8rvoVD6JaKzC1CRp6cu6Q0z0Lr2PeZxA"
+        # operation_params:
+        #   path: "/Photos/myfolder"
+        # operation_params:
+        #   from_path: "/Photos/cat1.jpg"
+        #   to_path: "/Photos/myfolder/cat1.jpg"
+        operation_params:
+          save_path: "/home/aindrila/Downloads/cat1.jpg"
+
+
+  - name: "Send Slack Message to DM"
+    enabled: false
+
+    fetcher:
+      class: fetchers.slack_fetcher.SlackFetcher
+      operation: get_dm_message_payload
+      params: 
+        token: "xoxb-9126993510113-9113953424658-aol06DkyXc3IgEA510gB6J1z"
+      operation_params:
+        username: "aindrilapatra2019"  # Replace with the actual Slack username
+        text: "Hi dear how are you!"
+        # thread_ts: "1680000000.000100"  # Optional, for replies
+
+    writers:
+      - class: writers.slack_writer.SlackWriter
+        operation: write_data
+        params:
+          token: "xoxb-9126993510113-9113953424658-aol06DkyXc3IgEA510gB6J1z"
+
+
+  - name: "Send Slack Message"
+    enabled: true
+
+    fetcher:
+      class: fetchers.slack_fetcher.SlackFetcher
+      operation: fetch_messages
+      params: 
+        token: "xoxb-9126993510113-9113953424658-aol06DkyXc3IgEA510gB6J1z"
+      operation_params:
+        channel: "U093CG6QRFE"
+
+    writers:
+      - class: writers.slack_writer.SlackWriter
+        operation: delete_message
+        params:
+          token: "xoxb-9126993510113-9113953424658-aol06DkyXc3IgEA510gB6J1z"  # Or use `slack_cred` from auth config
+        operation_params:
+          channel: "U093CG6QRFE"
+
 
 
 
