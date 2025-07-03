@@ -1,47 +1,110 @@
-# fetchers:
-#   - name: "Fetch Company Doc"
-#     class: fetchers.doc_fetcher.DocsFetcher
-#     enabled: true
-#     params:
-#       document_id: "1vCiKVeZJ-eu5k7mXCWLEHoKklCEnjklmcWSMGI2P-vc"
-
-#   # - class: fetchers.api_fetcher.ApiFetcher
-#   #   params:
-#   #     endpoint: "https://jsonplaceholder.typicode.com/posts"
-
-# writers:
-#   - name: "Fetch Company Doc"
-#     class: writers.sheet_writer.SheetsWriter
-#     enabled: true
-#     params:
-#       sheet_id: "1QQ5vdkowV-QHu4-awkiM-Mq06lQahY0NaunrDXFwQnw"
-#       mode: "append"  # custom param used by your writer
-
-#   # - class: writers.api_writer.ApiWriter
-#   #   params:
-#   #     endpoint: "https://example.com/api/store"
-
-
 pipeline:
+  # Starting of sheet *****************************************************
   - name: "Fetch or Write to Google Sheet"
     enabled: false
     fetcher:
       class: fetchers.sheets_fetcher.SheetsFetcher
       operation: fetch_data
       params:
-        spreadsheet_id: "1B_DrTxQFaWSRxWeTc7k0Bq6_GP2a2uwcLGZH6BoHaOc"
-        range_name: "Sheet1!A1:D10"
+        spreadsheet_id: "1QQ5vdkowV-QHu4-awkiM-Mq06lQahY0NaunrDXFwQnw"
         service_name: "sheets_cred"  # must match key in auth_config.yaml
+      operation_params:
+          range_name: "test!A1:D10"
 
     writers:
       - class: writers.sheet_writer.SheetsWriter
         operation: write_data
         params:
-          sheet_id: "1Q7UC0jNO2rJBfpVTP2h1QyA7YPi1f5zURVkRj4xTeGM"
-          mode: "append"
+          sheet_id: "15n41pNwyKFpzGd4yYR7A97N6QZ2MGiYPH9EChDeNAnQ"
+          # mode: "append"
           service_name: "sheets_cred"
+        operation_params:
+          mode: "append"
+
+  - name: "Fetch or Write to Google Sheet"
+    enabled: false
+    fetcher:
+      class: fetchers.sheets_fetcher.SheetsFetcher
+      operation: fetch
+      params:
+        spreadsheet_id: "1QQ5vdkowV-QHu4-awkiM-Mq06lQahY0NaunrDXFwQnw"
+        service_name: "sheets_cred"  # must match key in auth_config.yaml
+
+    writers:
+      - class: writers.sheet_writer.SheetsWriter
+        operation: update_cell
+        params:
+          sheet_id: "15n41pNwyKFpzGd4yYR7A97N6QZ2MGiYPH9EChDeNAnQ"
+          service_name: "sheets_cred"
+        operation_params:
+          row: 2
+          col: 2
+          value: "Updated Value"
+
+  - name: "Fetch or Write to Google Sheet"
+    enabled: false
+    fetcher:
+      class: fetchers.sheets_fetcher.SheetsFetcher
+      operation: fetch_range
+      params:
+        spreadsheet_id: "1QQ5vdkowV-QHu4-awkiM-Mq06lQahY0NaunrDXFwQnw"
+        service_name: "sheets_cred"  # must match key in auth_config.yaml
+      operation_params:
+          range_name: "test!A1:D10"
+
+    writers:
+      - class: writers.sheet_writer.SheetsWriter
+        operation: delete_row
+        params:
+          sheet_id: "15n41pNwyKFpzGd4yYR7A97N6QZ2MGiYPH9EChDeNAnQ"
+          service_name: "sheets_cred"
+        operation_params:
+          row_number: 3
+
+  - name: "Fetch or Write to Google Sheet"
+    enabled: false
+    fetcher:
+      class: fetchers.sheets_fetcher.SheetsFetcher
+      operation: fetch_row
+      params:
+        spreadsheet_id: "1QQ5vdkowV-QHu4-awkiM-Mq06lQahY0NaunrDXFwQnw"
+        service_name: "sheets_cred"  # must match key in auth_config.yaml
+      operation_params:
+          row_number: 2
+
+    writers:
+      - class: writers.sheet_writer.SheetsWriter
+        operation: delete_row
+        params:
+          sheet_id: "15n41pNwyKFpzGd4yYR7A97N6QZ2MGiYPH9EChDeNAnQ"
+          service_name: "sheets_cred"
+        operation_params:
+          row_number: 3
+
+  - name: "Fetch or Write to Google Sheet"
+    enabled: true
+    fetcher:
+      class: fetchers.sheets_fetcher.SheetsFetcher
+      operation: fetch_column
+      params:
+        spreadsheet_id: "1QQ5vdkowV-QHu4-awkiM-Mq06lQahY0NaunrDXFwQnw"
+        service_name: "sheets_cred"  # must match key in auth_config.yaml
+      operation_params:
+          col_number: 2
+
+    # writers:
+    #   - class: writers.sheet_writer.SheetsWriter
+    #     operation: delete_row
+    #     params:
+    #       sheet_id: "15n41pNwyKFpzGd4yYR7A97N6QZ2MGiYPH9EChDeNAnQ"
+    #       service_name: "sheets_cred"
+    #     operation_params:
+    #       row_number: 3
 
 
+    # End of sheet *********************************************************************
+
+    # Starting of doc *****************************************************************
   - name: "Fetch or write to google doc"
     enabled: false
     fetcher:
@@ -513,7 +576,7 @@ pipeline:
 
 
   - name: "Send Slack Message"
-    enabled: true
+    enabled: false
 
     fetcher:
       class: fetchers.slack_fetcher.SlackFetcher
@@ -530,6 +593,38 @@ pipeline:
           token: "xoxb-9126993510113-9113953424658-aol06DkyXc3IgEA510gB6J1z"  # Or use `slack_cred` from auth config
         operation_params:
           channel: "U093CG6QRFE"
+
+  - name: "Create Airtable Records"
+    enabled: false
+
+    fetcher:
+      class: fetchers.airtable_fetcher.AirtableFetcher
+      operation: prepare_records_payload
+      params:
+        base_id: "applniyI8CVaDRVay"
+        table_name: "tblFIZGZ9t8NRsyPC"
+        service_name: "airtable_cred"
+        # token: "patXXaIyJFrg1mpkg.33fe2fbe84bacc9bd454d3242aa3a9346379e42ebf93fc415668ecb7e7331fb2"  # Optional: mostly used by writer
+      operation_params:
+        records:
+          - fields:
+              Name: "Sneha"
+              Role: "Developer"
+              Email: "sneha@example.com"
+          - fields:
+              Name: "Aindrila"
+              Role: "Tester"
+              Email: "aindrila@example.com"
+
+    writers:
+      - class: writers.airtable_writer.AirtableWriter
+        operation: write_data
+        params:
+          base_id: "applniyI8CVaDRVay"
+          table_name: "tblFIZGZ9t8NRsyPC"
+          service_name: "airtable_cred"
+          # token: "patXXaIyJFrg1mpkg.33fe2fbe84bacc9bd454d3242aa3a9346379e42ebf93fc415668ecb7e7331fb2"
+
 
 
 

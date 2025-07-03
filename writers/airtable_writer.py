@@ -15,11 +15,14 @@ class AirtableWriter(Writer):
         self.table = None
 
     def initialize(self):
+        print("///////////////////////////")
         api_key = get_credentials(self.service_name)
         api = Api(api_key)
+        print("api&&&&&&&&&&&&&&&&&&&&&&", api, api_key)
         self.table = api.base(self.base_id).table(self.table_name)
+        print("self.table******************", self.table)
 
-    def create_records(self, data: DataWrapper) -> DataWrapper:
+    def write_data(self, data: DataWrapper) -> DataWrapper:
         """
         Create one or more records.
         Expects data.data = list of field-dicts:
@@ -48,7 +51,7 @@ class AirtableWriter(Writer):
 
     def get_operations(self):
         return {
-            "create_records": self.create_records,
+            "write_data": self.write_data,
             "update_records": self.update_records,
             "delete_records": self.delete_records,
         }

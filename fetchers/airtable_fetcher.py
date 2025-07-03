@@ -19,7 +19,7 @@ class AirtableFetcher(Fetcher):
         api = Api(api_key)
         self.table = api.base(self.base_id).table(self.table_name)
 
-    def fetch_all(self, max_records: int = 100, view: str = None) -> DataWrapper:
+    def fetch_data(self, max_records: int = 100, view: str = None) -> DataWrapper:
         """
         Fetch all matching records (with optional view filter and size limit).
         """
@@ -32,9 +32,21 @@ class AirtableFetcher(Fetcher):
         """
         rec = self.table.get(record_id)
         return DataWrapper(data=[rec])
+    
+    def prepare_records_payload(self, records: list) -> DataWrapper:
+        """
+        Prepare record data for Airtable insertion.
+        Args:
+            records: List of dicts, each dict should be in {'fields': {...}} format.
+
+        Returns:
+            DataWrapper with data to pass to writer.
+        """
+        return DataWrapper(data=records)
 
     def get_operations(self):
         return {
-            "fetch_all": self.fetch_all,
+            "fetch_data": self.fetch_data,
             "fetch_by_id": self.fetch_by_id,
+            "prepare_records_payload": self.prepare_records_payload
         }
