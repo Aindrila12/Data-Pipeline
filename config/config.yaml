@@ -82,7 +82,7 @@ pipeline:
           row_number: 3
 
   - name: "Fetch or Write to Google Sheet"
-    enabled: true
+    enabled: false
     fetcher:
       class: fetchers.sheets_fetcher.SheetsFetcher
       operation: fetch_column
@@ -104,26 +104,75 @@ pipeline:
 
     # End of sheet *********************************************************************
 
-    # Starting of doc *****************************************************************
+    # Starting of doc ******************************************************************
   - name: "Fetch or write to google doc"
     enabled: false
     fetcher:
       class: fetchers.doc_fetcher.DocsFetcher
       operation: get_document_title
       params:
-        doc_id: "1vCiKVeZJ-eu5k7mXCWLEHoKklCEnjklmcWSMGI2P-vc"
+        doc_id: "1eGYDQ3b2sCzc4CYgreE0cExiLJ0FDO_dmi26u3sDm_M"
         service_name: "docs_cred"
-      # operation_params:
-      #   heading: "What is Lorem Ipsum?"
     writers:
       - class: writers.doc_writer.DocsWriter
         operation: set_document_title
         params:
-          doc_id: "1QNvMpVy9-VMzlXsjdaOulXy-kSfcHlq941Z9q4y2SfM"
+          doc_id: "1Q-XiQkBbd2dJMbSwnlH1injeNPn8oAnvHN1Y3WzFlrY"
           service_name: "docs_cred"
-        # operation_params:
-        #   text: "My name is Aindrila"
-        #   level: 1
+
+  - name: "Fetch or write to google doc"
+    enabled: false
+    fetcher:
+      class: fetchers.doc_fetcher.DocsFetcher
+      operation: fetch_data
+      params:
+        doc_id: "1eGYDQ3b2sCzc4CYgreE0cExiLJ0FDO_dmi26u3sDm_M"
+        service_name: "docs_cred"
+      # operation_params:
+      #   heading: "Feature Comparison Document: Moodle vs Educational ERP"
+    writers:
+      - class: writers.doc_writer.DocsWriter
+        operation: insert_heading
+        params:
+          doc_id: "1Q-XiQkBbd2dJMbSwnlH1injeNPn8oAnvHN1Y3WzFlrY"
+          service_name: "docs_cred"
+        operation_params:
+          text: "Feature Comparison Document: Moodle vs Educational ERP"
+          level: 1
+          
+  - name: "Fetch or write to google doc"
+    enabled: false
+    fetcher:
+      class: fetchers.doc_fetcher.DocsFetcher
+      operation: fetch_text_by_heading
+      params:
+        doc_id: "1eGYDQ3b2sCzc4CYgreE0cExiLJ0FDO_dmi26u3sDm_M"
+        service_name: "docs_cred"
+      operation_params:
+        heading: "Feature Comparison Document: Moodle vs Educational ERP"
+    writers:
+      - class: writers.doc_writer.DocsWriter
+        operation: write_data
+        params:
+          doc_id: "1Q-XiQkBbd2dJMbSwnlH1injeNPn8oAnvHN1Y3WzFlrY"
+          service_name: "docs_cred"
+
+  - name: "Fetch or write to google doc"
+    enabled: true
+    fetcher:
+      class: fetchers.doc_fetcher.DocsFetcher
+      operation: fetch_paragraphs
+      params:
+        doc_id: "1eGYDQ3b2sCzc4CYgreE0cExiLJ0FDO_dmi26u3sDm_M"
+        service_name: "docs_cred"
+    writers:
+      - class: writers.doc_writer.DocsWriter
+        operation: clear_document
+        params:
+          doc_id: "1Q-XiQkBbd2dJMbSwnlH1injeNPn8oAnvHN1Y3WzFlrY"
+          service_name: "docs_cred"
+
+    # End of docs *********************************************************************
 
   - name: "Fetch or write to google calendar"
     enabled: false

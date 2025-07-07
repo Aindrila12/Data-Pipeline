@@ -99,13 +99,13 @@ class DocsWriter(Writer):
         ).execute()
         print(f"[DocsWriter] Inserted heading '{text}' (level {level}).")
 
-    def set_document_title(self, new_title: str):
+    def set_document_title(self, data: DataWrapper):
         """Set the title of the document using the Drive API."""
         creds = get_credentials("drive_cred")
         drive_service = build("drive", "v3", credentials=creds)
         drive_service.files().update(
             fileId=self.doc_id,
-            body={"name": new_title}
+            body={"name": data.data}
         ).execute()
 
 

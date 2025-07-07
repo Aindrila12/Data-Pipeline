@@ -64,7 +64,7 @@ class DocsFetcher(Fetcher):
     def get_document_title(self) -> str:
         """Fetch the title of the Google Doc."""
         doc = self.service.documents().get(documentId=self.document_id).execute()
-        return doc.get("title", "Untitled")
+        return DataWrapper(data=doc.get("title", "Untitled"))
 
 
     
