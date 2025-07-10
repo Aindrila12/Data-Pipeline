@@ -75,20 +75,20 @@ class GoogleCalendarWriter(Writer):
                     eventId=event_id
                 ).execute()
 
-    def clear_all_events(self, confirm: bool = False):
-        """
-        Delete all events from the calendar.
+    # def clear_all_events(self, confirm: bool = False):
+    #     """
+    #     Delete all events from the calendar.
 
-        Args:
-            confirm (bool): Set to True to confirm deletion. Prevents accidental wipes.
-        """
-        if not confirm:
-            print("[CalendarWriter] Skipping deletion. Set confirm=True to proceed.")
-            return
+    #     Args:
+    #         confirm (bool): Set to True to confirm deletion. Prevents accidental wipes.
+    #     """
+    #     if not confirm:
+    #         print("[CalendarWriter] Skipping deletion. Set confirm=True to proceed.")
+    #         return
 
-        events = self.service.events().list(calendarId=self.calendar_id).execute().get("items", [])
-        for e in events:
-            self.service.events().delete(calendarId=self.calendar_id, eventId=e["id"]).execute()
+    #     events = self.service.events().list(calendarId=self.calendar_id).execute().get("items", [])
+    #     for e in events:
+    #         self.service.events().delete(calendarId=self.calendar_id, eventId=e["id"]).execute()
 
     def get_operations(self):
         """
@@ -101,5 +101,5 @@ class GoogleCalendarWriter(Writer):
             "write_data": self.write_data,
             "update_event": self.update_event,
             "delete_event": self.delete_event,
-            "clear_all_events": self.clear_all_events,
+            # "clear_all_events": self.clear_all_events,
         }

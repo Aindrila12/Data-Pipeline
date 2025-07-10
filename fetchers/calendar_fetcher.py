@@ -19,16 +19,22 @@ class GoogleCalendarFetcher(Fetcher):
             calendar_id (str): The ID of the calendar to operate on. Defaults to "primary".
             service_name (str): Key to identify the credential configuration. Defaults to "calendar_cred".
         """
-        self.service_name = service_name
-        self.calendar_id = calendar_id
-        self.service = None
+        try:
+            self.service_name = service_name
+            self.calendar_id = calendar_id
+            self.service = None
+        except Exception as e:
+            raise ValueError(f"Failed to initialize GoogleCalendarFetcher: {e}")
 
     def initialize(self):
         """
         Initialize the Calendar API service using credentials.
         """
-        creds = get_credentials(self.service_name)
-        self.service = build("calendar", "v3", credentials=creds)
+        try:
+            creds = get_credentials(self.service_name)
+            self.service = build("calendar", "v3", credentials=creds)
+        except Exception as e:
+            raise ValueError(f"Failed to initialize Google Calendar service: {e}")
 
     def fetch_data(self, time_min: str = None, time_max: str = None, max_results: int = 10) -> DataWrapper:
         """
@@ -43,31 +49,45 @@ class GoogleCalendarFetcher(Fetcher):
         Returns:
             DataWrapper: A wrapped list of events retrieved from the calendar.
         """
-        now = datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC
-        time_min = time_min or now
+        try:
+            now = datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC
+            time_min = time_min or now
 
-        events_result = self.service.events().list(
-            calendarId=self.calendar_id,
-            timeMin=time_min,
-            timeMax=time_max,
-            maxResults=max_results,
-            singleEvents=True,
-            orderBy='startTime'
-        ).execute()
+            events_result = self.service.events().list(
+                calendarId=self.calendar_id,
+                timeMin=time_min,
+                timeMax=time_max,
+                maxResults=max_results,
+                singleEvents=True,
+                orderBy='startTime'
+            ).execute()
 
-        events = events_result.get('items', [])
-        return DataWrapper(data=events)
+            events = events_result.get('items', [])
+            return DataWrapper(data=events)
+        except Exception as e:
+            raise ValueError(f"Failed to fetch data from Google Calendar: {e}")
 
-    def get_upcoming_event(self) -> DataWrapper:
-        """
-        Fetch the next upcoming event from the calendar.
+    # def get_upcoming_event(self, calendar_id="primary") -> DataWrapper:
+    #     """
+    #     Fetch the next upcoming event from the calendar.
 
-        Returns:
-            DataWrapper: A wrapped single event dictionary, or empty list if none.
-        """
-        result = self.fetch_data(max_results=1)
-        print("result >>>>>>>>", result.data)
-        return result
+    #     Returns:
+    #         DataWrapper: A wrapped single event dictionary, or empty list if none.
+    #     """
+    #     try:
+    #         now = datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
+    #         events_result = self.service.events().list(
+    #             calendarId=calendar_id,
+    #             timeMin=now,
+    #             maxResults=1,
+    #             singleEvents=True,
+    #             orderBy='startTime'
+    #         ).execute()
+
+    #         events = events_result.get('items', [])
+    #         return DataWrapper(data=events)
+    #     except Exception as e:
+    #         raise ValueError(f"Failed to fetch upcoming event from Google Calendar: {e}")
         
     
     def get_sample_event(self, **event_details) -> DataWrapper:
@@ -92,6 +112,6 @@ class GoogleCalendarFetcher(Fetcher):
         """
         return {
             "fetch_data": self.fetch_data,
-            "get_upcoming_event": self.get_upcoming_event,
+            # "get_upcoming_event": self.get_upcoming_event,
             "get_sample_event": self.get_sample_event
         }

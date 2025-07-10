@@ -158,7 +158,7 @@ pipeline:
           service_name: "docs_cred"
 
   - name: "Fetch or write to google doc"
-    enabled: true
+    enabled: false
     fetcher:
       class: fetchers.doc_fetcher.DocsFetcher
       operation: fetch_paragraphs
@@ -174,56 +174,110 @@ pipeline:
 
     # End of docs *********************************************************************
 
+    # Starting of calendar ************************************************************
+
   - name: "Fetch or write to google calendar"
     enabled: false
     fetcher:
       class: fetchers.calendar_fetcher.GoogleCalendarFetcher
-      operation: get_upcoming_event
+      operation: fetch_data
       params:
         service_name: "calendar_cred"
-      # operation_params:
-      #   summary: "Sample Event11111"
-      #   description: "This is a sample event description."
-      #   start:
-      #     dateTime: "2025-06-18T10:00:00Z"
-      #     timeZone: "UTC"
-      #   end:
-      #     dateTime: "2025-06-18T11:00:00Z"
-      #     timeZone: "UTC"
-      #   attendees:
-      #     - email: "aindrilapatra2019@gmail.com"
-      #   reminders:
-      #     useDefault: true
+    # writers:
+    #   - class: writers.calendar_writer.GoogleCalendarWriter
+    #     operation: update_event
+    #     params:
+    #       service_name: "calendar_cred"
+    #     operation_params:
+    #       event_id: "ug1bd32r7d1e08jpeiff66vq00"  # <-- ID of the event you want to update
+    #       event:
+    #         - summary: "Updated Meeting Title"
+    #           description: "This is an updated event description."
+
+  - name: "Fetch or write to google calendar"
+    enabled: false
+    fetcher:
+      class: fetchers.calendar_fetcher.GoogleCalendarFetcher
+      operation: get_sample_event
+      params:
+        service_name: "calendar_cred"
+      operation_params:  # 👇 This is the event dictionary passed to get_sample_event()
+        summary: "Meeting with Sneha"
+        location: "Conference Room A"
+        description: "Project discussion and planning"
+        start:
+          dateTime: "2025-07-10T10:00:00+05:30"
+          timeZone: "Asia/Kolkata"
+        end:
+          dateTime: "2025-07-10T11:00:00+05:30"
+          timeZone: "Asia/Kolkata"
+        attendees:
+          - email: "sneha@example.com"
+          - email: "aindrila@example.com"
+        reminders:
+          useDefault: true
+    writers:
+      - class: writers.calendar_writer.GoogleCalendarWriter
+        operation: write_data
+        params:
+          service_name: "calendar_cred"
+
+  - name: "Fetch or write to google calendar"
+    enabled: false
+    fetcher:
+      class: fetchers.calendar_fetcher.GoogleCalendarFetcher
+      operation: fetch_data
+      params:
+        service_name: "calendar_cred"
     writers:
       - class: writers.calendar_writer.GoogleCalendarWriter
         operation: update_event
         params:
           service_name: "calendar_cred"
         operation_params:
-          event_id: "ug1bd32r7d1e08jpeiff66vq00"  # <-- ID of the event you want to update
+          event_id: "17ruo9ep1op4k0ksi533min89f"  # <-- ID of the event you want to update
           event:
-            - summary: "Updated Meeting Title"
+            - summary: "Updated Meeting Title **********************"
               description: "This is an updated event description."
 
-  - name: "Fetch or write to google drive"
+  - name: "Fetch or write to google calendar"
     enabled: false
     fetcher:
+      class: fetchers.calendar_fetcher.GoogleCalendarFetcher
+      operation: fetch_data
+      params:
+        service_name: "calendar_cred"
+    writers:
+      - class: writers.calendar_writer.GoogleCalendarWriter
+        operation: delete_event
+        params:
+          service_name: "calendar_cred"
+
+    # End of calendar ******************************************************************
+
+    # Starting of drive ******************************************************************
+
+  - name: "Fetch or write to google drive"
+    enabled: true
+    fetcher:
       class: fetchers.drive_fetcher.DriveFetcher
-      operation: fetch_file_id_by_name
+      operation: fetch_data
       params:
         service_name: "drive_cred"
-      operation_params:
-        filename: "cat"
-        parent_folder_id: "1gzM8pb6zejCMSQRYOYMGezRpGZylhAG4"
-        exact_match: false
-    writers:
-      - class: writers.drive_writer.DriveWriter
-        operation: share_file_with_email
-        params:
-          service_name: "drive_cred"
-        operation_params:
-          email: "aindrilapatra2019@gmail.com"
-          role: "writer"
+      # operation_params:
+      #   filename: "cat"
+      #   parent_folder_id: "1gzM8pb6zejCMSQRYOYMGezRpGZylhAG4"
+      #   exact_match: false
+    # writers:
+    #   - class: writers.drive_writer.DriveWriter
+    #     operation: share_file_with_email
+    #     params:
+    #       service_name: "drive_cred"
+    #     operation_params:
+    #       email: "aindrilapatra2019@gmail.com"
+    #       role: "writer"
+
+    # End of drive *********************************************************************
 
   # - name: "Fetch or write to google form"
   #   enabled: true
