@@ -270,12 +270,16 @@ pipeline:
       #   exact_match: false
     # writers:
     #   - class: writers.drive_writer.DriveWriter
-    #     operation: share_file_with_email
+    #     operation: write_data
     #     params:
     #       service_name: "drive_cred"
     #     operation_params:
-    #       email: "aindrilapatra2019@gmail.com"
-    #       role: "writer"
+    #       file_path: "/home/aindrila/Music/javascript_tutorial1.pdf"
+    #       mime_type: "application/pdf"
+    #       file_name: testing_file.pdf
+        # operation_params:
+        #   email: "aindrilapatra2019@gmail.com"
+        #   role: "writer"
 
     # End of drive *********************************************************************
 

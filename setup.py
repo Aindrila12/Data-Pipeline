@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="my_data_pipeline",
+    name="data-pipeline",
     version="0.1",
     packages=find_packages(),
     install_requires=[
@@ -19,7 +19,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'run-pipeline=my_data_pipeline.api:run_pipeline_from_file'
+            'run-pipeline=DATA_PIPELINE.api:run_pipeline_from_file'
         ]
     },
     include_package_data=True,
